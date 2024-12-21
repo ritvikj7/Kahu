@@ -14,8 +14,27 @@ type PetProfile struct {
 	Age            int    `json:"age"`
 	Birthday       string `json:"birthday"`
 	Weight         int    `json:"weight"`
-	Bio            string `json:"bio"`
-	ProfilePicture string `json:"profile_picture"`
+	Gender         string `json:"gender"`
+}
+
+// UpdateField updates the PetProfile struct.
+func UpdateField(profile *PetProfile, field string, value interface{}) {
+	switch field {
+	case "PetName":
+		profile.PetName = value.(string)
+	case "Breed":
+		profile.Breed = value.(string)
+	case "Age":
+		profile.Age = value.(int)
+	case "Birthday":
+		profile.Birthday = value.(string)
+	case "Weight":
+		profile.Weight = value.(int)
+	case "Gender":
+		profile.Gender = value.(string)
+	default:
+		fmt.Println("Invalid field")
+	}
 }
 
 // SaveProfile saves the pet profile to a local file

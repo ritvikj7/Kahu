@@ -4,6 +4,5 @@
   "age": 3,
   "birthday": "2020-05-10",
   "weight": 30,
-  "bio": "Spike loves chasing squirrels and belly rubs!",
-  "profile_picture": "https://example.com/spike.jpg"
+  "gender": "Male"
 }
