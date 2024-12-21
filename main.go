@@ -31,6 +31,6 @@ func main() {
 		return
 	}
 
-	// Print the loaded profile
+	// Print the loaded profile in console. 
 	fmt.Printf("Loaded Profile: %+v\n", loadedProfile)
 }
