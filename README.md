@@ -1,11 +1,10 @@
 # Kahu! 
-In hawaing, they don't call a dog a dog, or a pet. 
-They call it Kahu. Kahu has many meaning, some of which are Guardian, Protector, Steward, Beloverd attendant, Basically someone entrusted for the safekeeping of something precious. 
+In hawain, they don't call a dog a dog, or a pet. 
+They call it Kahu. Kahu has many meanings, some of which are Guardian, Protector, Steward, Beloverd attendant, and basically, someone entrusted for the safekeeping of something precious. 
 
+This is my sweet letter to Spike and what I want as an owner for Spike. This is an experimental piece where I want to try exploring App Development, developing using Apple Developer tools, and Learning Go. 
 
-## This is my sweet letter to Spike and what I want as an owner for Spike. This is an experimental piece where I want to try exploring App Development, developing using Apple Developer tools, and Learning Go. 
-
-Some capabilites I hope to add:
+Some capabilities I hope to add:
 ### Image Capabilities and Streak System
 - Photo Streak Tracker: Every time you take a photo of Spike, the streak count increases. Add fun streak milestones like "10 days in a row!" or "100 photos taken!" with celebratory animations.
 - Image Storage: Store images in a non-SQL database like Firebase or MongoDB for scalability.
