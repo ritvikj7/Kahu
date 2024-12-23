@@ -9,7 +9,7 @@ import (
 
 // PetProfile struct
 type PetProfile struct {
-	PetName        string `json:"pet_name"`
+	Name        string `json:"name"`
 	Breed          string `json:"breed"`
 	Age            int    `json:"age"`
 	Birthday       string `json:"birthday"`
@@ -21,7 +21,7 @@ type PetProfile struct {
 func UpdateField(profile *PetProfile, field string, value interface{}) {
 	switch field {
 	case "PetName":
-		profile.PetName = value.(string)
+		profile.Name = value.(string)
 	case "Breed":
 		profile.Breed = value.(string)
 	case "Age":
