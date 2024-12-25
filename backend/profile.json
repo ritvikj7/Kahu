@@ -1,8 +1,9 @@
 {
-  "name": "Belly",
-  "breed": "Golden Retriever",
-  "age": 3,
-  "birthday": "2020-05-10",
-  "weight": 30,
-  "gender": "Male"
+  "name": "Spike",
+  "breed": "Labrador Retriever",
+  "age": 1,
+  "birthday": "2023-12-14",
+  "weight": 60,
+  "gender": "Male",
+  "colour": "Red Fox"
 }

@@ -15,6 +15,7 @@ type PetProfile struct {
 	Birthday       string `json:"birthday"`
 	Weight         int    `json:"weight"`
 	Gender         string `json:"gender"`
+	Colour         string `json:"colour"`
 }
 
 // UpdateField updates the PetProfile struct.
@@ -32,6 +33,8 @@ func UpdateField(profile *PetProfile, field string, value interface{}) {
 		profile.Weight = value.(int)
 	case "Gender":
 		profile.Gender = value.(string)
+	case "Colour":
+		profile.Colour = value.(string)
 	default:
 		fmt.Println("Invalid field")
 	}
