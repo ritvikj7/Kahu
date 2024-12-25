@@ -11,7 +11,8 @@ import SwiftUI
 struct KahuApp: App {
     var body: some Scene {
         WindowGroup {
-            ProfileView() // Use ProfileView directly
+//            ProfileView() // Use ProfileView directly
+            ContentView()
         }
     }
 }

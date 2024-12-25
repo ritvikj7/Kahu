@@ -16,6 +16,7 @@ struct PetProfile: Codable {
     var birthday: String
     var weight: Int
     var gender: String
+    var colour: String
 }
 
 
