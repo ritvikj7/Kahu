@@ -44,21 +44,21 @@ struct ContentView: View {
 struct FeedView: View {
     var body: some View {
         NavigationView {
-            VStack {
-                Text("Welcome to the Feed")
-                    .font(.largeTitle)
-                    .padding()
+        VStack {
+            Text("Welcome to the Feed")
+                .font(.largeTitle)
+                .padding()
 
-                // Example Feed content
-                ScrollView {
-                    VStack(spacing: 20) {
-                        Text("Post 1")
-                        Text("Post 2")
-                        Text("Post 3")
-                    }
-                    .padding()
+            // Example Feed content
+            ScrollView {
+                VStack(spacing: 20) {
+                    Text("Post 1")
+                    Text("Post 2")
+                    Text("Post 3")
                 }
+                .padding()
             }
+        }
             .navigationTitle("Feed")
         }
     }

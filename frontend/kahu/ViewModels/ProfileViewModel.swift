@@ -40,4 +40,28 @@ class ProfileViewModel: ObservableObject {
             print("Error fetching or decoding profile: \(error)")
         }
     }
+    
+    // Save the profile to the backend
+    func saveProfile() async {
+        guard let url = URL(string: "http://localhost:8080/profile") else {
+            print("Invalid URL")
+            return
+        }
+
+        do {
+            // Perform the network request on a background thread
+            let (data, _) = try await URLSession.shared.data(from: url)
+
+            // Decode the JSON on a background thread
+            let decoder = JSONDecoder()
+            let profile = try decoder.decode(PetProfile.self, from: data)
+
+            // Update the UI on the main thread
+            await MainActor.run {
+                self.petProfile = profile
+            }
+        } catch {
+            print("Error fetching or decoding profile: \(error)")
+        }
+    }
 }
