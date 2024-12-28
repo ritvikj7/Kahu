@@ -32,7 +32,7 @@ struct ProfileView: View {
                            
                            Spacer()
                            
-                           HStack(spacing: 10){
+                           HStack(spacing: 8){
                                CountLabelView(count: "0", label: "Posts")
                                CountLabelView(count: "4", label: "Followers")
                                CountLabelView(count: "15", label: "Following")

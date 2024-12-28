@@ -88,5 +88,7 @@ func LoadProfile() (PetProfile, error) {
 		return PetProfile{}, fmt.Errorf("could not unmarshal profile: %v", err)
 	}
 
+	fmt.Println("Profile loaded successfully!")
+
 	return profile, nil
 }

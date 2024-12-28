@@ -10,6 +10,11 @@ import SwiftUI
 struct EditProfileView: View {
     // @ObservedObject, similar to @StateObject is used when you want a view to watch for changes in an external object (like your ViewModel) When something changes in the ViewModel (like petProfile), any view observing it will automatically update
     @ObservedObject var viewModel: ProfileViewModel
+    
+    // @Environment is a property wrapper that allows us to access values that are shared across the app. These values are provided by the SwiftUI framework. \.dismiss is a key path provided by SwiftUI. It gives us access to a built-in function that can dismiss the current view.
+    // By writing private var dismiss, we're creating a local variable named dismiss that refers to the dismissing functionality
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         NavigationView {
             ScrollView{
@@ -89,6 +94,7 @@ struct EditProfileView: View {
                             // Save the updated profile to a database or server
                             Task {
                                 await viewModel.saveProfile()
+                                dismiss() // Dismiss the current view to return to ProfileView
                             }
                         }) {
                             Text("Save Changes")

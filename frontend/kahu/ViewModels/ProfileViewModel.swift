@@ -19,7 +19,7 @@ class ProfileViewModel: ObservableObject {
 
     // Fetch the profile from the backend
     func getProfile() async {
-        guard let url = URL(string: "http://localhost:8080/profile") else {
+        guard let url = URL(string: "http://192.168.1.165:8080/profile") else {
             print("Invalid URL")
             return
         }
@@ -44,7 +44,7 @@ class ProfileViewModel: ObservableObject {
     // Save the profile to the backend
     func saveProfile() async {
         // 1. Define the API URL
-        guard let url = URL(string: "http://localhost:8080/profile/update") else {
+        guard let url = URL(string: "http://192.168.1.165:8080/profile/update") else {
             print("Invalid URL")
             return
         }

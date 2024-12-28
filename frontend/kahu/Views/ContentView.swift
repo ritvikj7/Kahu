@@ -23,6 +23,12 @@ struct ContentView: View {
                     .tabItem {
                         Label("Search", systemImage: "magnifyingglass")
                     }
+                
+                // Camera Tab
+                CameraView()
+                    .tabItem {
+                        Label("Camera", systemImage: "camera.fill")
+                    }
 
                 // Profile Tab
                 ProfileView()
@@ -86,6 +92,7 @@ struct SearchView: View {
         }
     }
 }
+
 
 
 
