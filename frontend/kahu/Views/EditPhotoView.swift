@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct EditPhotoView: View {
+    @StateObject private var viewModel = PostViewModel()
     @State private var userCaption: String = ""
     @State private var userLocation: String = ""
     @State private var userDate: Date = Date()
+    @State private var isLoading = false
     var image: UIImage?
     
     var body: some View {
@@ -81,14 +83,33 @@ struct EditPhotoView: View {
         .navigationTitle("New Post")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    // Add share action
-                } label: {
-                    Image(systemName: "arrow.right.circle.fill")
-                        .font(.title3)
+                if isLoading {
+                    ProgressView()
+                } else {
+                    Button {
+                        Task {
+                            await handlePost()
+                        }
+                    } label: {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title3)
+                    }
                 }
             }
         }
+    }
+    
+    private func handlePost() async {
+        guard let image = image else {
+            print("Image is required.")
+            return
+        }
+        
+        isLoading = true
+        
+        await viewModel.postImage(caption: userCaption, location: userLocation, date: userDate, image: image)
+        
+        isLoading = false
     }
 }
 

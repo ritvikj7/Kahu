@@ -10,6 +10,6 @@ import Foundation
 struct Post: Codable {
     var caption: String
     var location: String
-    var date: Date
+    var date: String
     var base64Image: String
 }

@@ -106,6 +106,6 @@ func routes() {
 	http.HandleFunc("/profile", getProfileHandler)           // GET request to retrieve profile
 	http.HandleFunc("/feed", getFeedHandler)                 // GET request to retrieve feed
 	http.HandleFunc("/profile/update", updateProfileHandler) // POST request to update profile
-	http.HandleFunc("/profile/add", addPostHandler)         // POST request to add image
-	http.HandleFunc("/profile/delete", deletePostHandler)   // POST request to delete image
+	http.HandleFunc("/feed/add/image", addPostHandler)          // POST request to add image
+	http.HandleFunc("/feed/delete/image", deletePostHandler)    // POST request to delete image
 }

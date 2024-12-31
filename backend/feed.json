@@ -1,0 +1,10 @@
+{
+  "posts": [
+    {
+      "caption": "Beautiful sunset",
+      "location": "Beach",
+      "date": "2024-12-31T01:41:01.546286-08:00",
+      "base64Image": "base64imagehere"
+    }
+  ]
+}
