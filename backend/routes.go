@@ -37,7 +37,7 @@ func updateProfileHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Profile updated successfully"))
 }
 
-// Handler for getting all images from the feed  
+// Handler for getting all posts from the feed  
 func getFeedHandler(w http.ResponseWriter, r *http.Request) {
 	feed, err := LoadFeed()
 	if err != nil {
@@ -50,10 +50,10 @@ func getFeedHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // Handler for adding an image to the feed
-func addImageHandler(w http.ResponseWriter, r *http.Request) {
-	var image Image
+func addPostHandler(w http.ResponseWriter, r *http.Request) {
+	var post Post
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&image)
+	err := decoder.Decode(&post)
 	if err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
@@ -65,7 +65,7 @@ func addImageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = AddImage(&feed, image)
+	err = AddPost(&feed, post)
 	if err != nil {
 		http.Error(w, "Could not add image to feed", http.StatusInternalServerError)
 		return
@@ -75,11 +75,11 @@ func addImageHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Feed updated successfully"))
 }
 
-// Handler for deleting an image from feed
-func deleteImageHandler(w http.ResponseWriter, r *http.Request) {
-	var image Image
+// Handler for deleting a post from feed
+func deletePostHandler(w http.ResponseWriter, r *http.Request) {
+	var post Post
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&image)
+	err := decoder.Decode(&post)
 	if err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
@@ -91,9 +91,9 @@ func deleteImageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = DeleteImage(&feed, image)
+	err = DeletePost(&feed, post)
 	if err != nil {
-		http.Error(w, "Could not add image to feed", http.StatusInternalServerError)
+		http.Error(w, "Could not add post to feed", http.StatusInternalServerError)
 		return
 	}
 
@@ -106,6 +106,6 @@ func routes() {
 	http.HandleFunc("/profile", getProfileHandler)           // GET request to retrieve profile
 	http.HandleFunc("/feed", getFeedHandler)                 // GET request to retrieve feed
 	http.HandleFunc("/profile/update", updateProfileHandler) // POST request to update profile
-	http.HandleFunc("/profile/add", addImageHandler)         // POST request to add image
-	http.HandleFunc("/profile/delete", deleteImageHandler)   // POST request to delete image
+	http.HandleFunc("/profile/add", addPostHandler)         // POST request to add image
+	http.HandleFunc("/profile/delete", deletePostHandler)   // POST request to delete image
 }

@@ -10,7 +10,7 @@ import (
 )
 
 // Image struct
-type Image struct {
+type Post struct {
 	Caption         string `json:"caption"`
 	Location        string `json:"location"`
 	Date            time.Time `json:"date"`
@@ -19,39 +19,39 @@ type Image struct {
 	// We will come back to this concept. 
 }
 
-// Feed represents a collection of Image posts
+// Feed represents a collection of posts
 type Feed struct {
 	// UserId  int `json:"userId"` 
-	Images []Image `json:"images"` // A slice of Image structs
+	Posts []Post `json:"posts"` // A slice of posts structs
 }
 
-// AddImage function updates the Feed by adding the new image
-func AddImage(feed *Feed, newImage Image) error {
-	// Add the new image to the feed
-	feed.Images = append(feed.Images, newImage)
+// AddPost function updates the Feed by adding the new post
+func AddPost(feed *Feed, newPost Post) error {
+	// Add the new post to the feed
+	feed.Posts = append(feed.Posts, newPost)
 	err := SaveFeed(*feed)
     if err != nil {
-        return fmt.Errorf("could not save feed after adding image: %v", err)
+        return fmt.Errorf("could not save feed after adding post: %v", err)
     }
 
-    fmt.Println("Image added successfully!")
+    fmt.Println("Post added successfully!")
     return nil
 }
 
-// DeleteImage function updates the Feed by deleting the passed image
-func DeleteImage(feed *Feed, image Image) error {
-	index := slices.Index(feed.Images, image) 
-	feed.Images = append(feed.Images[:index], feed.Images[index+1:]...)
+// DeletePost function updates the Feed by deleting the passed post
+func DeletePost(feed *Feed, post Post) error {
+	index := slices.Index(feed.Posts, post) 
+	feed.Posts = append(feed.Posts[:index], feed.Posts[index+1:]...)
 	err := SaveFeed(*feed)
     if err != nil {
-        return fmt.Errorf("could not save feed after removing image: %v", err)
+        return fmt.Errorf("could not save feed after removing post: %v", err)
     }
 
-    fmt.Println("Image removed successfully!")
+    fmt.Println("Post removed successfully!")
     return nil
 }
 
-// SaveFeeds saves the current images to a local file
+// SaveFeeds saves the current posts to a local file
 func SaveFeed(feed Feed) error {
 	// Convert the Feed struct to JSON
 	data, err := json.MarshalIndent(feed, "", "  ")
