@@ -49,24 +49,37 @@ struct ContentView: View {
 
 struct FeedView: View {
     var body: some View {
-        NavigationView {
         VStack {
-            Text("Welcome to the Feed")
-                .font(.largeTitle)
-                .padding()
-
-            // Example Feed content
-            ScrollView {
-                VStack(spacing: 20) {
-                    Text("Post 1")
-                    Text("Post 2")
-                    Text("Post 3")
+            Text("Camera access is required to proceed. Please enable camera permissions in your device's settings.")
+                .font(.title2)
+                .fontWeight(.medium)
+                .padding(.horizontal)
+                .multilineTextAlignment(.center)
+            
+            Button(action: {
+                // Open the app's settings page
+                if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
                 }
-                .padding()
+            }) {
+                Text("Request Permission")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .padding()
+                    .frame(maxWidth: .infinity) // Make button full width
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                    .shadow(radius: 10) // Adds shadow for depth
             }
+            .padding(.horizontal, 30) // Horizontal padding for button
+            .padding(.top, 20) // Add some space from the text
         }
-            .navigationTitle("Feed")
-        }
+        .padding()
+        .background(Color.gray.opacity(0.1)) // Light background for the container
+        .cornerRadius(20) // Rounded corners for the container
+        .shadow(radius: 10) // Shadow around the whole container for depth
+        .padding(.horizontal, 20) // Add padding to the sides
     }
 }
 

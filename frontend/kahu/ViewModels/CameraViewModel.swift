@@ -8,11 +8,22 @@
 
 import AVFoundation
 import SwiftUI
+import os
+
+
 
 class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     @Published var capturedImage: UIImage? // Holds the captured photo
-    @Published var isCameraActive: Bool = true // Controls camera session
-    @Published var hasCameraPermission: Bool = false // Tracks permission status
+    @Published var isCameraActive: Bool = false // Controls camera session
+    @Published var hasCameraPermission: Bool = false { // Tracks permission status
+            // The didSet property observer in Swift is a block of code that gets executed immediately after the value of a property changes.
+            didSet {
+                // Start the camera session when permission is granted
+                if hasCameraPermission {
+                    startCameraSession()
+                }
+            }
+        }
 
     private var captureSession: AVCaptureSession? // Manages the flow of data from the camera to your app.
     private var photoOutput = AVCapturePhotoOutput() // Handles the process of capturing photos.
@@ -26,31 +37,46 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
         return captureSession
     }
 
-    // Request Camera Permissions
+    // Request Camera Permissions if user does not have it.
     func checkCameraPermission() {
         // Check the current permession state
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             hasCameraPermission = true
-            // Ideally I would like to extract this function call out of the method.
-            setupCamera()
         case .notDetermined:
-            // requestAccess is an async method.
-            // { [weak self] granted in ... } is the closure (similar to a callback in typescript) which will
-            // be called after the async function executes.
-            // [weak self] ensures that the CameraViewModel instance can be freed from memory when it's no longer needed, even if the closure is still waiting for the user’s input.
-            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-                DispatchQueue.main.async {
-                    self?.hasCameraPermission = granted
-                    if granted {
-                        self?.setupCamera()
-                    }
-                }
-            }
+            requestCameraPermession()
         // Default case will be when authorization status ends up being .restricted, or .denied
         default:
             hasCameraPermission = false
         }
+    }
+    
+    func requestCameraPermession(){
+        // requestAccess is an async method.
+        // { [weak self] granted in ... } is the closure (similar to a callback in typescript) which will
+        // be called after the async function executes.
+        // [weak self] ensures that the CameraViewModel instance can be freed from memory when it's no longer needed, even if the closure is still waiting for the user’s input.
+        AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+            DispatchQueue.main.async {
+                self?.hasCameraPermission = granted
+            }
+        }
+    }
+    
+    // Start the camera session when needed
+    func startCameraSession() {
+        guard hasCameraPermission, !isCameraActive else { return }
+        
+        isCameraActive = true
+        setupCamera()
+    }
+
+    // Stop the camera session when not needed
+    func stopCameraSession() {
+        guard isCameraActive else { return }
+        
+        captureSession?.stopRunning()
+        isCameraActive = false
     }
 
     // Responsible for configuring and starting the camera session for capturing photos. It initializes the camera, sets up input and output for the camera session, and begins running the session.
@@ -93,7 +119,8 @@ extension CameraViewModel {
             print("Error capturing photo: \(String(describing: error))")
             return
         }
-
+        
+        
         DispatchQueue.main.async {
             self.capturedImage = image
             self.isCameraActive = false // Stop showing the camera preview

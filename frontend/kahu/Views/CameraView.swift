@@ -13,38 +13,107 @@ struct CameraView: View {
     @StateObject private var cameraViewModel = CameraViewModel() // The CameraViewModel instance
     
     var body: some View {
-        VStack {
-            if cameraViewModel.isCameraActive {
-                // Live camera feed
-                CameraPreviewView(session: cameraViewModel.getCaptureSession())
-                    .edgesIgnoringSafeArea(.all)
-            } else {
-                // Show the captured image if the camera is inactive
-                if let capturedImage = cameraViewModel.capturedImage {
-                    Image(uiImage: capturedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .edgesIgnoringSafeArea(.all)
+        if !cameraViewModel.hasCameraPermission {
+            VStack {
+                Text("Camera access is required to proceed. Please enable camera permissions in your device's settings.")
+                    .font(.title2)
+                    .fontWeight(.medium)
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
+                
+                Button(action: {
+                    // Open the app's settings page
+                    if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+                    }
+                }) {
+                    Text("Request Permission")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame(maxWidth: .infinity) // Make button full width
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                        .shadow(radius: 10) // Adds shadow for depth
                 }
-            }
-            
-            // Button to capture a photo
-            Button(action: {
-                cameraViewModel.capturePhoto()
-            }) {
-                Text("Capture Photo")
-                    .font(.title)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                .padding(.horizontal, 30) // Horizontal padding for button
+                .padding(.top, 20) // Add some space from the text
             }
             .padding()
+            .background(Color.gray.opacity(0.1)) // Light background for the container
+            .cornerRadius(20) // Rounded corners for the container
+            .shadow(radius: 10) // Shadow around the whole container for depth
+            .padding(.horizontal, 20) // Add padding to the sides
         }
-//        .onAppear {
-//            // Check and request camera permissions when the view appears
-//            cameraViewModel.checkCameraPermission()
-//        }
+        else {
+            NavigationView{
+                VStack {
+                    if cameraViewModel.isCameraActive {
+                        // Live camera feed
+                        VStack{
+                            CameraPreviewView(session: cameraViewModel.getCaptureSession())
+                                .edgesIgnoringSafeArea(.all)
+                            
+                            Button(action: {
+                                cameraViewModel.capturePhoto()
+                            }) {
+                               Image(systemName: "circle.fill")
+                                   .font(.largeTitle) // Set the size of the icon
+                                   .foregroundColor(.black) // Set the icon color to blue
+                                   .padding() // Padding around the icon
+                                   .background(Color.white) // White background
+                                   .clipShape(Circle()) // Make the button round
+                                   .shadow(radius: 10) // Add shadow for depth
+                           }
+                           .padding(.bottom, 30)
+                        }
+                    } else {
+                        ZStack(alignment: .bottom) {
+                            // Show the captured image if the camera is inactive
+                            if let capturedImage = cameraViewModel.capturedImage {
+                                Image(uiImage: capturedImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .edgesIgnoringSafeArea(.all)
+                                
+                                // Bottom buttons (Retry and Proceed)
+                                HStack {
+                                    // Retry Button
+                                    Button(action: {
+                                        cameraViewModel.startCameraSession() // Retry capturing the photo
+                                    }) {
+                                        Image(systemName: "xmark") // "Replay" or "retry" icon
+                                            .font(.largeTitle)
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .background(Color.black)
+                                            .clipShape(Circle())
+                                            .shadow(radius: 10)
+                                    }
+                                    .padding(.bottom, 30)
+                                    
+                                    Spacer()
+                                    
+                                    // Proceed Button
+                                    NavigationLink(destination: EditPhotoView(image: capturedImage)) {
+                                        Image(systemName: "arrow.right") // "Proceed" or "confirm" icon
+                                            .font(.largeTitle)
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .background(Color.black)
+                                            .clipShape(Circle())
+                                            .shadow(radius: 10)
+                                    }
+                                    .padding(.bottom, 30)
+                                }
+                                .padding()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
