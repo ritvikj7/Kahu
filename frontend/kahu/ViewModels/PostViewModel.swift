@@ -32,7 +32,6 @@ class PostViewModel: ObservableObject {
         return formatter.string(from: date)
     }
     
-    // Save the profile to the backend
     func postImage(caption: String, location: String, date: Date, image: UIImage) async {
         // 1. Create a post
         guard let post: Post = createPost(caption: caption, location: location, date: date, image: image) else {
@@ -47,6 +46,31 @@ class PostViewModel: ObservableObject {
         }
         
         // 3. Create a URLRequest
+       var request = URLRequest(url: url)
+       request.httpMethod = "POST"
+       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            // 4. Encode the profile into JSON
+            let jsonData = try JSONEncoder().encode(post)
+            request.httpBody = jsonData
+            
+            // 4. Make the HTTP request using async/await
+            let (_, _) = try await URLSession.shared.data(for: request)
+            
+        } catch {
+            print("Error updating and saving profile: \(error)")
+        }
+    }
+    
+    func deleteImage(post: Post) async {
+        // 1. Define the API URL
+        guard let url = URL(string: "http://192.168.1.165:8080/feed/delete/image") else {
+            print("Invalid URL")
+            return
+        }
+        
+        // 2. Create a URLRequest
        var request = URLRequest(url: url)
        request.httpMethod = "POST"
        request.setValue("application/json", forHTTPHeaderField: "Content-Type")

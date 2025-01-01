@@ -114,10 +114,7 @@ struct FeedView: View {
     private func imageCell(for index: Int) -> some View {
         if let tempImage = viewModel.base64ToImage(base64Image: posts[index].base64Image) {
             return AnyView(
-                NavigationLink(destination: PostView(comment: posts[index].caption,
-                                                     location: posts[index].location,
-                                                     date: posts[index].date,
-                                                     image: tempImage)){
+                NavigationLink(destination: PostView(image: tempImage, post: posts[index])){
                     Image(uiImage: tempImage)
                         .resizable()
                         .scaledToFill()

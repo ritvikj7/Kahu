@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct PostView: View {
-    @State var comment: String
-    @State var location: String
-    @State var date: String
     @State var image: UIImage
+    @State var post: Post
+    @StateObject private var postViewModel: PostViewModel = PostViewModel()
+    @Environment(\.dismiss) private var dismiss
     
 
     var body: some View {
@@ -25,7 +25,7 @@ struct PostView: View {
                     .clipped()
 
                 // Comment text with styling
-                Text(comment)
+                Text(post.caption)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.primary)
@@ -36,7 +36,7 @@ struct PostView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "mappin.and.ellipse")
                         .foregroundColor(.blue)
-                    Text(location)
+                    Text(post.location)
                         .font(.body)
                         .foregroundColor(.secondary)
                 }
@@ -45,7 +45,7 @@ struct PostView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "calendar")
                         .foregroundColor(.green)
-                    Text(date)
+                    Text(post.date)
                         .font(.body)
                         .foregroundColor(.secondary)
                 }
@@ -58,7 +58,10 @@ struct PostView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
-                    
+                    Task{
+                        await postViewModel.deleteImage(post: post)
+                        dismiss() // Dismiss the current view to return to FeedView
+                    }
                 }) {
                     Image(systemName: "trash")
                         .foregroundColor(.red)
