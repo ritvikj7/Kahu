@@ -47,41 +47,6 @@ struct ContentView: View {
     }
 }
 
-struct FeedView: View {
-    var body: some View {
-        VStack {
-            Text("Camera access is required to proceed. Please enable camera permissions in your device's settings.")
-                .font(.title2)
-                .fontWeight(.medium)
-                .padding(.horizontal)
-                .multilineTextAlignment(.center)
-            
-            Button(action: {
-                // Open the app's settings page
-                if let appSettings = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
-                }
-            }) {
-                Text("Request Permission")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .padding()
-                    .frame(maxWidth: .infinity) // Make button full width
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
-                    .shadow(radius: 10) // Adds shadow for depth
-            }
-            .padding(.horizontal, 30) // Horizontal padding for button
-            .padding(.top, 20) // Add some space from the text
-        }
-        .padding()
-        .background(Color.gray.opacity(0.1)) // Light background for the container
-        .cornerRadius(20) // Rounded corners for the container
-        .shadow(radius: 10) // Shadow around the whole container for depth
-        .padding(.horizontal, 20) // Add padding to the sides
-    }
-}
 
 struct SearchView: View {
     var body: some View {
