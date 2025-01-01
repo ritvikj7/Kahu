@@ -13,6 +13,7 @@ struct EditPhotoView: View {
     @State private var userLocation: String = ""
     @State private var userDate: Date = Date()
     @State private var isLoading = false
+    @ObservedObject var cameraViewModel: CameraViewModel
     var image: UIImage?
     
     var body: some View {
@@ -89,6 +90,7 @@ struct EditPhotoView: View {
                     Button {
                         Task {
                             await handlePost()
+                            cameraViewModel.resetCameraSession()
                         }
                     } label: {
                         Image(systemName: "arrow.right.circle.fill")
@@ -110,11 +112,5 @@ struct EditPhotoView: View {
         await viewModel.postImage(caption: userCaption, location: userLocation, date: userDate, image: image)
         
         isLoading = false
-    }
-}
-
-#Preview {
-    NavigationView {
-        EditPhotoView()
     }
 }

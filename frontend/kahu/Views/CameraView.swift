@@ -81,7 +81,7 @@ struct CameraView: View {
                                 HStack {
                                     // Retry Button
                                     Button(action: {
-                                        cameraViewModel.startCameraSession() // Retry capturing the photo
+                                        cameraViewModel.resetCameraSession()
                                     }) {
                                         Image(systemName: "xmark") // "Replay" or "retry" icon
                                             .font(.largeTitle)
@@ -96,7 +96,7 @@ struct CameraView: View {
                                     Spacer()
                                     
                                     // Proceed Button
-                                    NavigationLink(destination: EditPhotoView(image: capturedImage)) {
+                                    NavigationLink(destination: EditPhotoView(cameraViewModel: cameraViewModel, image: capturedImage)) {
                                         Image(systemName: "arrow.right") // "Proceed" or "confirm" icon
                                             .font(.largeTitle)
                                             .foregroundColor(.white)

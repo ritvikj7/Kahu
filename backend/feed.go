@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	// "time"
 	"slices"
 )
 
@@ -13,7 +12,6 @@ import (
 type Post struct {
 	Caption         string `json:"caption"`
 	Location        string `json:"location"`
-	// Date            time.Time `json:"date"`
 	Date            string `json:"date"`
 	Base64Image     string `json:"base64Image"`
 	// over here we should have some sort of key that helps us identify an image. 

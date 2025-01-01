@@ -70,6 +70,18 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
         isCameraActive = true
         setupCamera()
     }
+    
+    // Start the camera session when needed
+    func resetCameraSession() {
+        guard hasCameraPermission, !isCameraActive else { return }
+        
+        isCameraActive = true
+        guard let captureSession = captureSession else{
+            setupCamera()
+            return
+        }
+        captureSession.startRunning()
+    }
 
     // Stop the camera session when not needed
     func stopCameraSession() {
