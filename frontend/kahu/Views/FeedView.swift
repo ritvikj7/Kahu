@@ -11,11 +11,11 @@ struct FeedView: View {
     @StateObject private var viewModel = FeedViewModel()
     @State var numberOfPosts = 0
     @State var currentState: String = "Regular"
-    @State private var regularImages: [UIImage] = []
-    @State private var aiImages: [UIImage] = []
+    @State private var regularPosts: [Post] = []
+    @State private var aiPosts: [Post] = []
     
-    var images: [UIImage] {
-        currentState == "Regular" ? regularImages : aiImages
+    var posts: [Post] {
+        currentState == "Regular" ? regularPosts : aiPosts
     }
     
     // Calculate grid layout
@@ -29,9 +29,9 @@ struct FeedView: View {
             .onAppear {
                 Task {
                     await viewModel.getProfile()
-                    viewModel.getImage()
-                    numberOfPosts = viewModel.image.count
-                    regularImages = viewModel.image
+                    viewModel.getPosts()
+                    numberOfPosts = viewModel.posts.count
+                    regularPosts = viewModel.posts
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -104,7 +104,7 @@ struct FeedView: View {
     
     private var imagesGrid: some View {
         LazyVGrid(columns: columns, spacing: 2) {
-            ForEach(images.indices, id: \.self) { index in
+            ForEach(posts.indices, id: \.self) { index in
                 imageCell(for: index)
             }
         }
@@ -112,13 +112,22 @@ struct FeedView: View {
     }
     
     private func imageCell(for index: Int) -> some View {
-        NavigationLink(destination: PostView(image: images[index])){
-            Image(uiImage: images[index])
-                .resizable()
-                .scaledToFill()
-                .frame(width: (UIScreen.main.bounds.width - 2) / 3,
-                       height: (UIScreen.main.bounds.width - 2) / 3)
-                .clipped()
+        if let tempImage = viewModel.base64ToImage(base64Image: posts[index].base64Image) {
+            return AnyView(
+                NavigationLink(destination: PostView(comment: posts[index].caption,
+                                                     location: posts[index].location,
+                                                     date: posts[index].date,
+                                                     image: tempImage)){
+                    Image(uiImage: tempImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: (UIScreen.main.bounds.width - 2) / 3,
+                               height: (UIScreen.main.bounds.width - 2) / 3)
+                        .clipped()
+                }
+            )
+        } else {
+            return AnyView(emptyStateView)
         }
     }
 }

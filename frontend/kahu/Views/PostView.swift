@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct PostView: View {
-    @State var comment: String = "Spikes First Bath"
-    @State var location: String = "Vancouver, Canada"
-    @State var date: String = "2024 December 31"
+    @State var comment: String
+    @State var location: String
+    @State var date: String
     @State var image: UIImage
     
 

@@ -19,6 +19,8 @@ import UIKit
 class FeedViewModel: ObservableObject {
     @Published var feed: Feed?
     @Published var image: [UIImage] = []
+    @Published var posts: [Post] = []
+
     
     func getProfile() async {
         guard let url = URL(string: "http://192.168.1.165:8080/feed") else {
@@ -55,18 +57,10 @@ class FeedViewModel: ObservableObject {
     }
     
     @MainActor
-    func getImage(){
+    func getPosts(){
         guard let feed = feed else{
             return
         }
-        
-        var temp: [UIImage] = []
-        
-        feed.posts.forEach{ post in
-            if let image = base64ToImage(base64Image: post.base64Image){
-                temp.append(image)
-            }
-        }
-        self.image = temp
+        self.posts = feed.posts
     }
 }
