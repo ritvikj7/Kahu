@@ -112,12 +112,14 @@ struct FeedView: View {
     }
     
     private func imageCell(for index: Int) -> some View {
-        Image(uiImage: images[index])
-            .resizable()
-            .scaledToFill()
-            .frame(width: (UIScreen.main.bounds.width - 2) / 3,
-                   height: (UIScreen.main.bounds.width - 2) / 3)
-            .clipped()
+        NavigationLink(destination: PostView(image: images[index])){
+            Image(uiImage: images[index])
+                .resizable()
+                .scaledToFill()
+                .frame(width: (UIScreen.main.bounds.width - 2) / 3,
+                       height: (UIScreen.main.bounds.width - 2) / 3)
+                .clipped()
+        }
     }
 }
 

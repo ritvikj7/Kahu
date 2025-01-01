@@ -106,11 +106,8 @@ struct EditPhotoView: View {
             print("Image is required.")
             return
         }
-        
         isLoading = true
-        
         await viewModel.postImage(caption: userCaption, location: userLocation, date: userDate, image: image)
-        
         isLoading = false
     }
 }
