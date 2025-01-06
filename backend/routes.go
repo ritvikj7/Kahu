@@ -93,7 +93,7 @@ func deletePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = DeletePost(&feed, post)
 	if err != nil {
-		http.Error(w, "Could not add post to feed", http.StatusInternalServerError)
+		http.Error(w, "Could not delete post from the feed", http.StatusInternalServerError)
 		return
 	}
 
@@ -101,11 +101,79 @@ func deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Feed updated successfully"))
 }
 
+// Handler for getting all schedule items from the schedule  
+func getScheduleHandler(w http.ResponseWriter, r *http.Request) {
+	feed, err := LoadSchedule()
+	if err != nil {
+		http.Error(w, "Could not load schedule", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(feed)
+}
+
+// Handler for adding a schedule item to the schedule
+func addScheduleItemHandler(w http.ResponseWriter, r *http.Request) {
+	var scheduleItem ScheduleItem
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&scheduleItem)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	schedule, err := LoadSchedule()
+	if err != nil {
+		http.Error(w, "Could not load schedule", http.StatusInternalServerError)
+		return
+	}
+
+	err = AddScheduleItem(&schedule, scheduleItem)
+	if err != nil {
+		http.Error(w, "Could not add schedule item to schedule", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Schedule updated successfully"))
+}
+
+// Handler for deleting a schedule item from the schedule
+func deleteScheduleItemHandler(w http.ResponseWriter, r *http.Request) {
+	var scheduleItem ScheduleItem
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&scheduleItem)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	schedule, err := LoadSchedule()
+	if err != nil {
+		http.Error(w, "Could not load schedule", http.StatusInternalServerError)
+		return
+	}
+
+	err = DeleteScheduleItem(&schedule, scheduleItem)
+	if err != nil {
+		http.Error(w, "Could not delete schechule item from the schedule", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Schedule updated successfully"))
+}
+
 // Define routes
 func routes() {
-	http.HandleFunc("/profile", getProfileHandler)           // GET request to retrieve profile
-	http.HandleFunc("/feed", getFeedHandler)                 // GET request to retrieve feed
-	http.HandleFunc("/profile/update", updateProfileHandler) // POST request to update profile
-	http.HandleFunc("/feed/add/image", addPostHandler)          // POST request to add image
-	http.HandleFunc("/feed/delete/image", deletePostHandler)    // POST request to delete image
+	http.HandleFunc("/profile", getProfileHandler)                              // GET request to retrieve profile
+	http.HandleFunc("/feed", getFeedHandler)                                    // GET request to retrieve feed
+	http.HandleFunc("/schedule", getScheduleHandler)                            // GET request to retrieve feed
+	http.HandleFunc("/profile/update", updateProfileHandler)                    // POST request to update profile
+	http.HandleFunc("/feed/add/image", addPostHandler)                          // POST request to add image
+	http.HandleFunc("/feed/delete/image", deletePostHandler)                    // POST request to delete image
+	http.HandleFunc("/feed/add/schedule/item", addScheduleItemHandler)          // POST request to add schedule item
+	http.HandleFunc("/feed/delete/schedule/item", deleteScheduleItemHandler)    // POST request to delete image
+
 }
