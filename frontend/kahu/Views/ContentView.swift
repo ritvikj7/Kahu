@@ -19,9 +19,9 @@ struct ContentView: View {
                     }
 
                 // Search Tab
-                SearchView()
+                ScheduleView()
                     .tabItem {
-                        Label("Search", systemImage: "magnifyingglass")
+                        Label("Schedule", systemImage: "calendar")
                     }
                 
                 // Camera Tab
@@ -40,37 +40,12 @@ struct ContentView: View {
             // Divider above the TabView
             Divider()
                 .background(Color.gray) // Customize color
-                .frame(height: 1) // Adjust thickness of the line
-                .padding(.bottom, 90) // Adjust to position the line just above the tabs
+                .frame(height: -5) // Adjust thickness of the line
+                .padding(.bottom, 87.5) // Adjust to position the line just above the tabs
         }
         .edgesIgnoringSafeArea(.bottom) // Ensure the TabView extends to the screen's bottom
     }
 }
-
-
-struct SearchView: View {
-    var body: some View {
-        NavigationView {
-            VStack {
-                Text("Search for content")
-                    .font(.largeTitle)
-                    .padding()
-
-                // Example Search content
-                ScrollView {
-                    VStack(spacing: 20) {
-                        Text("Search Result 1")
-                        Text("Search Result 2")
-                        Text("Search Result 3")
-                    }
-                    .padding()
-                }
-            }
-            .navigationTitle("Search")
-        }
-    }
-}
-
 
 
 
